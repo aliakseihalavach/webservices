@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="UserServiceService" targetNamespace="http://soap.webservices.mentoring.epam.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://soap.webservices.mentoring.epam.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:tns="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.w3.org/2005/Atom" version="1.0">
+
+  <xs:element name="link" type="tns:link"/>
+
+  <xs:complexType name="link">
+    <xs:sequence/>
+    <xs:attribute name="rel" type="xs:string"/>
+    <xs:attribute name="href" type="xs:string"/>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:tns="http://soap.webservices.mentoring.epam.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://soap.webservices.mentoring.epam.com/" version="1.0">
+
+  <xs:import namespace="http://soap.webservices.mentoring.epam.com/"/>
+
+  <xs:element name="createUser" type="tns:createUser"/>
+
+  <xs:element name="createUserResponse" type="tns:createUserResponse"/>
+
+  <xs:element name="deleteUser" type="tns:deleteUser"/>
+
+  <xs:element name="deleteUserResponse" type="tns:deleteUserResponse"/>
+
+  <xs:element name="getUser" type="tns:getUser"/>
+
+  <xs:element name="getUserResponse" type="tns:getUserResponse"/>
+
+  <xs:element name="updateUser" type="tns:updateUser"/>
+
+  <xs:element name="updateUserResponse" type="tns:updateUserResponse"/>
+
+  <xs:complexType name="getUser">
+    <xs:sequence>
+      <xs:element name="userID" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getUserResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="user">
+    <xs:complexContent>
+      <xs:extension base="tns:abstaractBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="email" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="surname" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="tasks" nillable="true" type="tns:task"/>
+          <xs:element name="userID" type="xs:long"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstaractBean">
+    <xs:complexContent>
+      <xs:extension base="resourceSupport">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="task">
+    <xs:complexContent>
+      <xs:extension base="tns:abstaractBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="creationDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="deadLine" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="taskID" type="xs:long"/>
+          <xs:element minOccurs="0" name="user" type="tns:user"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="createUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="user" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createUserResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteUser">
+    <xs:sequence>
+      <xs:element name="userID" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteUserResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="updateUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="user" type="tns:user"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateUserResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://soap.webservices.mentoring.epam.com/" version="1.0">
+
+  <xs:import namespace="http://www.w3.org/2005/Atom"/>
+
+  <xs:complexType name="resourceSupport">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" ref="atom:link"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="templateVariable">
+    <xs:sequence/>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="deleteUserResponse">
+    <wsdl:part name="parameters" element="tns:deleteUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateUserResponse">
+    <wsdl:part name="parameters" element="tns:updateUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createUser">
+    <wsdl:part name="parameters" element="tns:createUser">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteUser">
+    <wsdl:part name="parameters" element="tns:deleteUser">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateUser">
+    <wsdl:part name="parameters" element="tns:updateUser">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUser">
+    <wsdl:part name="parameters" element="tns:getUser">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createUserResponse">
+    <wsdl:part name="parameters" element="tns:createUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getUserResponse">
+    <wsdl:part name="parameters" element="tns:getUserResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="UserService">
+    <wsdl:operation name="getUser">
+      <wsdl:input name="getUser" message="tns:getUser">
+    </wsdl:input>
+      <wsdl:output name="getUserResponse" message="tns:getUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createUser">
+      <wsdl:input name="createUser" message="tns:createUser">
+    </wsdl:input>
+      <wsdl:output name="createUserResponse" message="tns:createUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteUser">
+      <wsdl:input name="deleteUser" message="tns:deleteUser">
+    </wsdl:input>
+      <wsdl:output name="deleteUserResponse" message="tns:deleteUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateUser">
+      <wsdl:input name="updateUser" message="tns:updateUser">
+    </wsdl:input>
+      <wsdl:output name="updateUserResponse" message="tns:updateUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="UserServiceServiceSoapBinding" type="tns:UserService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getUser">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getUser">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createUser">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createUser">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteUser">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteUser">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateUser">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateUser">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="UserServiceService">
+    <wsdl:port name="UserServicePort" binding="tns:UserServiceServiceSoapBinding">
+      <soap:address location="http://localhost:9090/UserServicePort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.epam.mentoring.webservices.bean.Task" batch-size="100" table="DB_TASK">
+    <id name="taskID" type="long">
+      <column name="task_id"/>
+      <generator class="sequence">
+        <param name="sequence">SEQ_task</param>
+      </generator>
+    </id>
+    <property name="name" type="string">
+      <column name="name" not-null="true"/>
+    </property>
+    <property name="description" type="string">
+      <column name="description" not-null="true"/>
+    </property>
+    <property name="creationDate" type="java.util.Date">
+      <column name="creation_date" not-null="true"/>
+    </property>
+    <property name="deadLine" type="java.util.Date">
+      <column name="deadline" not-null="true"/>
+    </property>
+    <many-to-one name="user" class="com.epam.mentoring.webservices.bean.User" fetch="join">
+        <column name="user_id" not-null="true"/>
+    </many-to-one> 
+  </class>
+</hibernate-mapping>

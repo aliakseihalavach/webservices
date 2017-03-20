@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:sec="http://www.springframework.org/schema/security"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+   	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+  	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	http://www.springframework.org/schema/util
+	http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security-3.2.xsd
+	http://cxf.apache.org/jaxws
+    http://cxf.apache.org/schemas/jaxws.xsd
+   ">
+
+	<context:component-scan
+		base-package="com.epam.mentoring.webservices.rest.controller" />
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/database.properties</value>
+				<value>/WEB-INF/application.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
+	<!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" 
+		p:location="/WEB-INF/database.properties" /> -->
+
+	<bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource"
+		destroy-method="close">
+		<property name="URL" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="connectionCacheProperties">
+			<props merge="default">
+				<prop key="MinLimit">3</prop>
+				<prop key="MaxLimit">50</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configurationClass">
+			<value>org.hibernate.cfg.Configuration</value>
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.current_session_context_class">thread</prop>
+				<prop key="hibernate.jdbc.batch_size">100</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>User.hbm.xml</value>
+				<value>Task.hbm.xml</value>
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="userDAO" class="com.epam.mentoring.webservices.dao.UserDAO" />
+	<bean id="taskDAO" class="com.epam.mentoring.webservices.dao.TaskDAO" />
+
+	<bean id="jsonConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="prefixJson" value="false" />
+		<property name="supportedMediaTypes" value="application/json" />
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonConverter" />
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Swagger Config -->
+
+	<bean id="swagger2Config"
+		class="springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration" />
+
+	<mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+	<mvc:resources mapping="/webjars/**"
+		location="classpath:/META-INF/resources/webjars/" />
+
+	<!-- SPRING Security Config -->
+	<!--	<sec:http entry-point-ref="restAuthenticationEntryPoint">
+		<sec:intercept-url pattern="/**" access="ROLE_ADMIN" />
+		<sec:form-login authentication-success-handler-ref="mySuccessHandler"
+			authentication-failure-handler-ref="myFailureHandler" />
+		<sec:logout />
+	</sec:http>
+
+	<bean id="mySuccessHandler"
+		class="com.epam.mentoring.webservices.config.MySavedRequestAwareAuthenticationSuccessHandler" />
+	<bean id="myFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" />
+
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider>
+			<sec:user-service>
+				<sec:user name="temporary" password="temporary"
+					authorities="ROLE_ADMIN" />
+				<sec:user name="user" password="user" authorities="ROLE_USER" />
+			</sec:user-service>
+		</sec:authentication-provider>
+	</sec:authentication-manager>-->
+
+	<!-- SOAP CONFIG -->
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+
+	<jaxws:endpoint id="taskService" address="/TaskService"
+		implementor="com.epam.mentoring.webservices.soap.TaskServiceImpl" />
+		
+	<jaxws:endpoint id="userService" address="/UserService"
+		implementor="com.epam.mentoring.webservices.soap.UserServiceImpl" />
+
+	<jaxws:client id="userClient"
+		serviceClass="com.epam.mentoring.webservices.soap.UserService"
+		address="http://localhost:8083/webservices/soap/UserService" />
+
+	<jaxws:client id="taskClient"
+		serviceClass="com.epam.mentoring.webservices.soap.TaskService"
+		address="http://localhost:8083/webservices/soap/TaskService" />
+
+</beans>

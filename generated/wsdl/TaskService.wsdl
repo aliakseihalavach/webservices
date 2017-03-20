@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="TaskServiceService" targetNamespace="http://soap.webservices.mentoring.epam.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://soap.webservices.mentoring.epam.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:tns="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.w3.org/2005/Atom" version="1.0">
+
+  <xs:element name="link" type="tns:link"/>
+
+  <xs:complexType name="link">
+    <xs:sequence/>
+    <xs:attribute name="rel" type="xs:string"/>
+    <xs:attribute name="href" type="xs:string"/>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:tns="http://soap.webservices.mentoring.epam.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified" targetNamespace="http://soap.webservices.mentoring.epam.com/" version="1.0">
+
+  <xs:import namespace="http://soap.webservices.mentoring.epam.com/"/>
+
+  <xs:element name="createTask" type="tns:createTask"/>
+
+  <xs:element name="createTaskResponse" type="tns:createTaskResponse"/>
+
+  <xs:element name="deleteTask" type="tns:deleteTask"/>
+
+  <xs:element name="deleteTaskResponse" type="tns:deleteTaskResponse"/>
+
+  <xs:element name="getTask" type="tns:getTask"/>
+
+  <xs:element name="getTaskResponse" type="tns:getTaskResponse"/>
+
+  <xs:element name="updateTask" type="tns:updateTask"/>
+
+  <xs:element name="updateTaskResponse" type="tns:updateTaskResponse"/>
+
+  <xs:complexType name="getTask">
+    <xs:sequence>
+      <xs:element name="taskID" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="getTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:task"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="task">
+    <xs:complexContent>
+      <xs:extension base="tns:abstaractBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="creationDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="deadLine" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="taskID" type="xs:long"/>
+          <xs:element minOccurs="0" name="user" type="tns:user"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType abstract="true" name="abstaractBean">
+    <xs:complexContent>
+      <xs:extension base="resourceSupport">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="user">
+    <xs:complexContent>
+      <xs:extension base="tns:abstaractBean">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="email" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="surname" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="tasks" nillable="true" type="tns:task"/>
+          <xs:element name="userID" type="xs:long"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="createTask">
+    <xs:sequence>
+      <xs:element name="userID" type="xs:long"/>
+      <xs:element minOccurs="0" name="task" type="tns:task"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="createTaskResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteTask">
+    <xs:sequence>
+      <xs:element name="taskID" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="deleteTaskResponse">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="updateTask">
+    <xs:sequence>
+      <xs:element name="userID" type="xs:long"/>
+      <xs:element minOccurs="0" name="task" type="tns:task"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="updateTaskResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://soap.webservices.mentoring.epam.com/" version="1.0">
+
+  <xs:import namespace="http://www.w3.org/2005/Atom"/>
+
+  <xs:complexType name="resourceSupport">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" ref="atom:link"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType final="extension restriction" name="templateVariable">
+    <xs:sequence/>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="getTask">
+    <wsdl:part name="parameters" element="tns:getTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaskResponse">
+    <wsdl:part name="parameters" element="tns:getTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createTask">
+    <wsdl:part name="parameters" element="tns:createTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteTask">
+    <wsdl:part name="parameters" element="tns:deleteTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createTaskResponse">
+    <wsdl:part name="parameters" element="tns:createTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteTaskResponse">
+    <wsdl:part name="parameters" element="tns:deleteTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateTaskResponse">
+    <wsdl:part name="parameters" element="tns:updateTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateTask">
+    <wsdl:part name="parameters" element="tns:updateTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TaskService">
+    <wsdl:operation name="getTask">
+      <wsdl:input name="getTask" message="tns:getTask">
+    </wsdl:input>
+      <wsdl:output name="getTaskResponse" message="tns:getTaskResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createTask">
+      <wsdl:input name="createTask" message="tns:createTask">
+    </wsdl:input>
+      <wsdl:output name="createTaskResponse" message="tns:createTaskResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTask">
+      <wsdl:input name="deleteTask" message="tns:deleteTask">
+    </wsdl:input>
+      <wsdl:output name="deleteTaskResponse" message="tns:deleteTaskResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateTask">
+      <wsdl:input name="updateTask" message="tns:updateTask">
+    </wsdl:input>
+      <wsdl:output name="updateTaskResponse" message="tns:updateTaskResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TaskServiceServiceSoapBinding" type="tns:TaskService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updateTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TaskServiceService">
+    <wsdl:port name="TaskServicePort" binding="tns:TaskServiceServiceSoapBinding">
+      <soap:address location="http://localhost:9090/TaskServicePort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
