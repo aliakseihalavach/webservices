@@ -6,7 +6,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.epam.mentoring.webservices.bean.AbstaractBean;
-import com.epam.mentoring.webservices.bean.Task;
 
 public abstract class BeanDAO<T extends AbstaractBean> implements
 		IBeanDAO<AbstaractBean> {
@@ -43,9 +42,11 @@ public abstract class BeanDAO<T extends AbstaractBean> implements
 	public void delete(long beanID) {
 		Session session = sessionFactory.getCurrentSession();
 		Transaction transaction = session.beginTransaction();
-		T bean = (T) session.load(Task.class, beanID);
-		session.delete(bean);
-		session.flush();
-		transaction.commit();
+		T bean = (T) session.load(getBeanClass(), beanID);
+		if (bean != null) {
+			session.delete(bean);
+			session.flush();
+			transaction.commit();
+		}
 	}
 }

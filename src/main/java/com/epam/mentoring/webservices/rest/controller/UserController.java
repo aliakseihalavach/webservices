@@ -44,8 +44,12 @@ public class UserController {
 	@ApiOperation(value = "Update User", notes = "Updates a user with provided parameters")
 	public long updateUser(@PathVariable long userID, @RequestBody User user) {
 		user.setUserID(userID);
-		userDAO.save(user);
-		return user.getUserID();
+		if (userDAO.get(userID) != null) {
+			userDAO.save(user);
+			return userID;
+		} else {
+			return -1;
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{userID}")
@@ -67,9 +71,9 @@ public class UserController {
 			}
 		}
 	}
-	
+
 	@Autowired
-	public void setUserManager(UserDAO userDAO) {
+	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
 }

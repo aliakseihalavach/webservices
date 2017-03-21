@@ -45,9 +45,13 @@ public class TaskController {
 	@ApiOperation(value = "Create Task", notes = "Creates a task with provided parameters")
 	public long createTask(@PathVariable long userID, @RequestBody Task task) {
 		User user = userDAO.get(userID);
-		task.setUser(user);
-		taskDAO.save(task);
-		return task.getTaskID();
+		if (user != null) {
+			task.setUser(user);
+			taskDAO.save(task);
+			return task.getTaskID();
+		} else {
+			return -1;
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{taskID}", consumes = {
@@ -56,10 +60,14 @@ public class TaskController {
 	public long updateTask(@PathVariable long userID,
 			@PathVariable long taskID, @RequestBody Task task) {
 		User user = userDAO.get(userID);
-		task.setUser(user);
-		task.setTaskID(taskID);
-		taskDAO.save(task);
-		return task.getTaskID();
+		if (user != null && taskDAO.get(taskID) != null) {
+			task.setUser(user);
+			task.setTaskID(taskID);
+			taskDAO.save(task);
+			return task.getTaskID();
+		} else {
+			return -1;
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{taskID}")

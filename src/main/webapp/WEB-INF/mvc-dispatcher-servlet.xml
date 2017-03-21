@@ -39,7 +39,7 @@
 				<value>/WEB-INF/application.properties</value>
 			</list>
 		</property>
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	<!--	<property name="ignoreUnresolvablePlaceholders" value="true" />-->
 	</bean>
 
 	<!--<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" 
@@ -146,10 +146,10 @@
 
 	<jaxws:client id="userClient"
 		serviceClass="com.epam.mentoring.webservices.soap.UserService"
-		address="http://localhost:8083/webservices/soap/UserService" />
+		address="${application.userServiceAddress}" />
 
 	<jaxws:client id="taskClient"
 		serviceClass="com.epam.mentoring.webservices.soap.TaskService"
-		address="http://localhost:8083/webservices/soap/TaskService" />
+		address="${application.taskServiceAddress}" />
 
 </beans>
