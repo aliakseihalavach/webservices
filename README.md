@@ -7,8 +7,9 @@ Implemented:
 - swagger. Swaggers docs are accessible from {appAddress}/swagger-ui.html
 
 
-Not Implemented (didn't have enough time to):
+Not Implemented:
 
 - exception handling.
 - transaction support.
 - security solutions.
+- tests.
