@@ -13,3 +13,5 @@ Not Implemented:
 - transaction support.
 - security solutions.
 - tests.
+
+I'll do better next time :(
