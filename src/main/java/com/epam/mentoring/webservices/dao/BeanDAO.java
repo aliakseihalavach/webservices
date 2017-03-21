@@ -43,7 +43,7 @@ public abstract class BeanDAO<T extends AbstaractBean> implements
 		Session session = sessionFactory.getCurrentSession();
 		Transaction transaction = session.beginTransaction();
 		T bean = (T) session.load(getBeanClass(), beanID);
-		if (bean != null) {
+		if (bean.getID() != 0) {
 			session.delete(bean);
 			session.flush();
 			transaction.commit();
